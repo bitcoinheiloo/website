@@ -8,7 +8,6 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bitcoinheiloo.nl/">
   <meta name="theme-color" content="#f5f0e6">
-
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bitcoinheiloo.nl/">
   <meta property="og:title" content="Bitcoin Heiloo">
@@ -18,19 +17,35 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Bitcoin Heiloo">
   <meta name="twitter:description" content="Een bitcoin meetup in Heiloo en omgeving. Laat je e-mailadres achter voor updates.">
-
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23f7931a'/><text x='50' y='68' font-size='58' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>₿</text></svg>">
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "WebSite", "name": "Bitcoin Heiloo", "url": "https://bitcoinheiloo.nl/", "inLanguage": "nl-NL" },
-      { "@type": "Organization", "name": "Bitcoin Heiloo", "url": "https://bitcoinheiloo.nl/", "description": "Een lokale meetup over bitcoin in Heiloo en omgeving." }
+      {
+        "@type": "WebSite",
+        "name": "Bitcoin Heiloo",
+        "url": "https://bitcoinheiloo.nl/",
+        "inLanguage": "nl-NL"
+      },
+      {
+        "@type": "Organization",
+        "name": "Bitcoin Heiloo",
+        "url": "https://bitcoinheiloo.nl/",
+        "description": "Een lokale meetup over bitcoin in Heiloo en omgeving."
+      }
     ]
   }
   </script>
-
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <style>
     :root {
       color-scheme: light;
@@ -44,13 +59,32 @@
       --orange-hover: #e8820c;
       --orange-ink: #a24b00;
       --green: #2f5a45;
+      --tape: rgba(222, 205, 165, 0.8);
+      --input-bg: #ffffff;
+      --input-border: #bdb29e;
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #161513;
+      --paper-dark: #1f1d1a;
+      --card: #201e1a;
+      --ink: #f4efe6;
+      --muted: #a69e92;
+      --line: #332f29;
+      --orange: #f7931a;
+      --orange-hover: #ffaa40;
+      --orange-ink: #ffaa40;
+      --green: #48a376;
+      --tape: rgba(60, 55, 48, 0.85);
+      --input-bg: #161513;
+      --input-border: #423d35;
+    }
+
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       background: var(--paper);
@@ -59,36 +93,19 @@
       font-size: 17px;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
+      transition: background-color .25s ease, color .25s ease;
     }
-
     [hidden] { display: none !important; }
-
     a { color: var(--orange-ink); text-underline-offset: 3px; }
     a:hover { color: var(--ink); }
     button, input { font: inherit; }
     :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
-
-    h1, h2, h3 {
-      margin-top: 0;
-      font-family: var(--serif);
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -0.01em;
-    }
-
+    h1, h2, h3 { margin-top: 0; font-family: var(--serif); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
     .container { width: min(100% - 40px, 1060px); margin-inline: auto; }
 
     /* ---------- Header ---------- */
     .site-header { border-bottom: 1px solid var(--line); }
-
-    .nav {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -100,7 +117,6 @@
       text-decoration: none;
       white-space: nowrap;
     }
-
     .coin {
       display: grid;
       place-items: center;
@@ -114,17 +130,10 @@
       font-weight: 700;
       line-height: 1;
     }
-
+    .nav-actions { display: flex; align-items: center; gap: 24px; }
     .nav-links { display: flex; align-items: center; gap: 28px; }
-
-    .nav-links a {
-      color: var(--muted);
-      font-size: 0.92rem;
-      text-decoration: none;
-    }
-
+    .nav-links a { color: var(--muted); font-size: 0.92rem; text-decoration: none; }
     .nav-links a:hover { color: var(--ink); text-decoration: underline; }
-
     .nav-links .nav-cta {
       color: var(--ink);
       font-weight: 650;
@@ -133,68 +142,37 @@
       text-decoration-thickness: 2px;
     }
 
+    /* Theme Toggle */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      cursor: pointer;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: border-color .2s, background .2s, transform .15s;
+    }
+    .theme-toggle:hover { border-color: var(--orange); transform: scale(1.05); }
+    .theme-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
     /* ---------- Hero ---------- */
     .hero { padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 9vw, 110px); }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-      align-items: start;
-      gap: clamp(40px, 7vw, 90px);
-    }
-
-    .place {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      font-style: italic;
-    }
-
-    h1 {
-      max-width: 640px;
-      margin-bottom: 24px;
-      font-size: clamp(2.7rem, 6vw, 4.6rem);
-      line-height: 1.04;
-    }
-
-    .marker {
-      padding: 0 0.08em;
-      background: linear-gradient(transparent 60%, rgba(247, 147, 26, 0.5) 60%, rgba(247, 147, 26, 0.5) 92%, transparent 92%);
-    }
-
-    .lead {
-      max-width: 540px;
-      margin: 0 0 36px;
-      color: var(--muted);
-      font-size: clamp(1.05rem, 1.7vw, 1.18rem);
-      line-height: 1.7;
-    }
-
-    .facts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 540px;
-      margin: 0;
-      border-top: 2px solid var(--ink);
-    }
-
-    .facts div {
-      padding: 14px 16px 14px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .facts dt {
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 650;
-    }
-
-    .facts dd {
-      margin: 2px 0 0;
-      font-family: var(--serif);
-      font-size: 1.1rem;
-    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr); align-items: start; gap: clamp(40px, 7vw, 90px); }
+    .place { margin: 0 0 18px; color: var(--muted); font-family: var(--serif); font-size: 1.05rem; font-style: italic; }
+    h1 { max-width: 640px; margin-bottom: 24px; font-size: clamp(2.7rem, 6vw, 4.6rem); line-height: 1.04; }
+    .marker { padding: 0 0.08em; background: linear-gradient(transparent 60%, rgba(247, 147, 26, 0.45) 60%, rgba(247, 147, 26, 0.45) 92%, transparent 92%); }
+    .lead { max-width: 540px; margin: 0 0 36px; color: var(--muted); font-size: clamp(1.05rem, 1.7vw, 1.18rem); line-height: 1.7; }
+    .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 540px; margin: 0; border-top: 2px solid var(--ink); }
+    .facts div { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--line); }
+    .facts dt { color: var(--muted); font-size: 0.8rem; font-weight: 650; }
+    .facts dd { margin: 2px 0 0; font-family: var(--serif); font-size: 1.1rem; }
 
     /* ---------- Aanmeldbriefje ---------- */
     .signup-card {
@@ -207,7 +185,6 @@
       transform: rotate(0.8deg);
       scroll-margin-top: 32px;
     }
-
     .signup-card::before {
       content: "";
       position: absolute;
@@ -215,48 +192,28 @@
       left: 50%;
       width: 116px;
       height: 28px;
-      background: rgba(222, 205, 165, 0.8);
+      background: var(--tape);
       transform: translateX(-50%) rotate(-3deg);
     }
-
     .signup-card h2 { margin-bottom: 8px; font-size: 1.6rem; }
-
-    .signup-intro {
-      margin: 0 0 24px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .signup label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.88rem;
-      font-weight: 650;
-    }
-
+    .signup-intro { margin: 0 0 24px; color: var(--muted); font-size: 0.95rem; }
+    .signup label { display: block; margin-bottom: 6px; font-size: 0.88rem; font-weight: 650; }
     .signup label span { color: var(--muted); font-weight: 400; }
-
     .signup input {
       display: block;
       width: 100%;
       min-height: 48px;
       margin-bottom: 16px;
       padding: 10px 13px;
-      border: 1.5px solid #bdb29e;
+      border: 1.5px solid var(--input-border);
       border-radius: 4px;
-      background: #fff;
+      background: var(--input-bg);
       color: var(--ink);
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-
-    .signup input::placeholder { color: #9d968a; }
-
-    .signup input:focus {
-      border-color: var(--ink);
-      box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.3);
-    }
-
+    .signup input::placeholder { color: var(--muted); opacity: 0.8; }
+    .signup input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.3); }
     .signup button {
       width: 100%;
       min-height: 50px;
@@ -265,31 +222,17 @@
       border: 2px solid var(--ink);
       border-radius: 4px;
       background: var(--orange);
-      color: var(--ink);
+      color: #1f1c18;
       font-weight: 700;
       cursor: pointer;
       transition: background 0.15s, transform 0.1s;
     }
-
     .signup button:hover { background: var(--orange-hover); }
     .signup button:active { transform: translateY(1px); }
     .signup button:disabled { opacity: 0.65; cursor: wait; }
-
-    .privacy {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-
-    .form-error {
-      margin: 12px 0 0;
-      color: #b42318;
-      font-size: 0.88rem;
-    }
-
+    .privacy { margin: 14px 0 0; color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+    .form-error { margin: 12px 0 0; color: #e5484d; font-size: 0.88rem; }
     .success { text-align: center; padding: 8px 0; }
-
     .success .check {
       display: grid;
       place-items: center;
@@ -302,47 +245,16 @@
       font-size: 1.4rem;
       font-weight: 700;
     }
-
     .success h3 { margin-bottom: 8px; font-size: 1.45rem; }
     .success p { margin: 0; color: var(--muted); font-size: 0.95rem; }
 
     /* ---------- Secties ---------- */
-    .section {
-      padding: clamp(64px, 8vw, 100px) 0;
-      border-top: 1px solid var(--line);
-      scroll-margin-top: 0;
-    }
-
+    .section { padding: clamp(64px, 8vw, 100px) 0; border-top: 1px solid var(--line); scroll-margin-top: 0; }
     .section-alt { background: var(--paper-dark); border-top: 0; }
-
-    .section-grid {
-      display: grid;
-      grid-template-columns: 200px minmax(0, 1fr);
-      gap: clamp(24px, 6vw, 72px);
-    }
-
-    .side-label {
-      margin: 6px 0 0;
-      color: var(--orange-ink);
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      font-style: italic;
-    }
-
-    .section-title {
-      max-width: 660px;
-      margin-bottom: 18px;
-      font-size: clamp(1.9rem, 3.6vw, 2.75rem);
-    }
-
-    .section-text {
-      max-width: 640px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.8;
-    }
-
+    .section-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: clamp(24px, 6vw, 72px); }
+    .side-label { margin: 6px 0 0; color: var(--orange-ink); font-family: var(--serif); font-size: 1.1rem; font-style: italic; }
+    .section-title { max-width: 660px; margin-bottom: 18px; font-size: clamp(1.9rem, 3.6vw, 2.75rem); }
+    .section-text { max-width: 640px; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.8; }
     .pullquote {
       max-width: 600px;
       margin: 36px 0 0;
@@ -355,44 +267,16 @@
     }
 
     /* Voor wie */
-    .audience {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 40px;
-      border-top: 2px solid var(--ink);
-    }
-
+    .audience { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; border-top: 2px solid var(--ink); }
     .audience article { padding: 26px 32px 6px 0; }
-
-    .audience article + article {
-      padding-left: 32px;
-      padding-right: 0;
-      border-left: 1px solid var(--line);
-    }
-
+    .audience article + article { padding-left: 32px; padding-right: 0; border-left: 1px solid var(--line); }
     .audience h3 { margin-bottom: 10px; font-size: 1.4rem; }
     .audience p { margin: 0; color: var(--muted); }
 
     /* Stappen */
-    .steps {
-      max-width: 700px;
-      margin: 40px 0 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: step;
-    }
-
-    .steps li {
-      display: grid;
-      grid-template-columns: 64px minmax(0, 1fr);
-      gap: 8px;
-      padding: 22px 0;
-      border-top: 1px solid var(--line);
-      counter-increment: step;
-    }
-
+    .steps { max-width: 700px; margin: 40px 0 0; padding: 0; list-style: none; counter-reset: step; }
+    .steps li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; padding: 22px 0; border-top: 1px solid var(--line); counter-increment: step; }
     .steps li:last-child { border-bottom: 1px solid var(--line); }
-
     .steps li::before {
       content: counter(step);
       color: var(--orange-ink);
@@ -401,27 +285,14 @@
       font-weight: 700;
       line-height: 1;
     }
-
     .steps h3 { margin-bottom: 6px; font-size: 1.25rem; }
     .steps p { margin: 0; color: var(--muted); }
 
     /* FAQ */
     .faq-list { max-width: 700px; margin-top: 36px; border-top: 2px solid var(--ink); }
-
     details { border-bottom: 1px solid var(--line); }
-
-    summary {
-      position: relative;
-      padding: 18px 40px 18px 0;
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 700;
-      cursor: pointer;
-      list-style: none;
-    }
-
+    summary { position: relative; padding: 18px 40px 18px 0; font-family: var(--serif); font-size: 1.15rem; font-weight: 700; cursor: pointer; list-style: none; }
     summary::-webkit-details-marker { display: none; }
-
     summary::after {
       content: "+";
       position: absolute;
@@ -434,66 +305,32 @@
       line-height: 1;
       transform: translateY(-50%);
     }
-
     details[open] summary::after { content: "−"; }
-
-    details p {
-      margin: -4px 40px 20px 0;
-      color: var(--muted);
-    }
+    details p { margin: -4px 40px 20px 0; color: var(--muted); }
 
     /* Afsluiter */
-    .closing {
-      padding: clamp(64px, 8vw, 96px) 0;
-      background: var(--ink);
-      color: var(--paper);
-      text-align: center;
-    }
-
-    .closing h2 {
-      margin-bottom: 14px;
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-    }
-
-    .closing p {
-      max-width: 520px;
-      margin: 0 auto 30px;
-      color: #cfc6b6;
-    }
-
+    .closing { padding: clamp(64px, 8vw, 96px) 0; background: #0e0d0b; color: #f5f0e6; text-align: center; }
+    .closing h2 { margin-bottom: 14px; font-size: clamp(1.9rem, 4vw, 2.8rem); color: #f5f0e6; }
+    .closing p { max-width: 520px; margin: 0 auto 30px; color: #cfc6b6; }
     .button-link {
       display: inline-block;
       padding: 13px 26px;
       border: 2px solid var(--orange);
       border-radius: 4px;
       background: var(--orange);
-      color: var(--ink);
+      color: #1f1c18;
       font-weight: 700;
       text-decoration: none;
     }
-
-    .button-link:hover { background: var(--orange-hover); color: var(--ink); }
+    .button-link:hover { background: var(--orange-hover); color: #1f1c18; }
 
     /* Footer */
-    .site-footer {
-      padding: 26px 0;
-      background: var(--ink);
-      border-top: 1px solid #3a352e;
-      color: #b5ad9f;
-      font-size: 0.88rem;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px 28px;
-    }
-
+    .site-footer { padding: 26px 0; background: #0e0d0b; border-top: 1px solid #292520; color: #b5ad9f; font-size: 0.88rem; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 28px; }
     .footer-inner p { margin: 0; }
-    .footer-inner strong { color: var(--paper); font-family: var(--serif); }
+    .footer-inner strong { color: #f5f0e6; font-family: var(--serif); }
     .site-footer a { color: var(--orange); }
-    .site-footer a:hover { color: var(--paper); }
+    .site-footer a:hover { color: #f5f0e6; }
 
     /* ---------- Responsive ---------- */
     @media (max-width: 880px) {
@@ -502,17 +339,14 @@
       .signup-card { max-width: 520px; transform: none; }
       .section-grid { grid-template-columns: 1fr; gap: 8px; }
     }
-
     @media (max-width: 640px) {
       .container { width: min(100% - 32px, 1060px); }
       .audience { grid-template-columns: 1fr; }
-      .audience article,
-      .audience article + article { padding: 22px 0; border-left: 0; }
+      .audience article, .audience article + article { padding: 22px 0; border-left: 0; }
       .audience article + article { border-top: 1px solid var(--line); }
       .steps li { grid-template-columns: 48px minmax(0, 1fr); }
       .steps li::before { font-size: 2rem; }
     }
-
     @media (max-width: 420px) {
       body { font-size: 16px; }
       .nav { min-height: 64px; }
@@ -521,27 +355,42 @@
       .facts { grid-template-columns: 1fr; }
       .signup-card { padding: 24px 20px; box-shadow: 5px 5px 0 var(--orange); }
     }
-
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
-
 <body>
   <header class="site-header">
     <nav class="container nav" aria-label="Hoofdnavigatie">
       <a class="brand" href="/" aria-label="Bitcoin Heiloo, naar boven">
-        <span class="coin" aria-hidden="true">₿</span>
-        Bitcoin Heiloo
+        <span class="coin" aria-hidden="true">₿</span> Bitcoin Heiloo
       </a>
-      <div class="nav-links">
-        <a href="#over">Het idee</a>
-        <a href="#voor-wie">Voor wie</a>
-        <a href="#planning">Planning</a>
-        <a href="#faq">Vragen</a>
-        <a class="nav-cta" href="#aanmelden">Updates krijgen</a>
+      <div class="nav-actions">
+        <div class="nav-links">
+          <a href="#over">Het idee</a>
+          <a href="#voor-wie">Voor wie</a>
+          <a href="#planning">Planning</a>
+          <a href="#faq">Vragen</a>
+          <a class="nav-cta" href="#aanmelden">Updates krijgen</a>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Wissel donkere modus">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
       </div>
     </nav>
   </header>
@@ -553,11 +402,8 @@
           <p class="place">Een meetup in Heiloo en omgeving</p>
           <h1>Ook benieuwd naar <span class="marker">bitcoin?</span></h1>
           <p class="lead">
-            We willen kijken of er in Heiloo en omgeving mensen zijn die het leuk
-            vinden om eens over bitcoin te praten. Ervaring is niet nodig — vragen
-            hebben is genoeg. Als er een datum en plek zijn, laten we het je weten.
+            We willen kijken of er in Heiloo en omgeving mensen zijn die het leuk vinden om eens over bitcoin te praten. Ervaring is niet nodig — vragen hebben is genoeg. Als er een datum en plek zijn, laten we het je weten.
           </p>
-
           <dl class="facts">
             <div><dt>Waar</dt><dd>Heiloo of in de buurt</dd></div>
             <div><dt>Wanneer</dt><dd>Waarschijnlijk begin 2027</dd></div>
@@ -569,10 +415,8 @@
         <div class="signup-card" id="aanmelden">
           <h2>Houd me op de hoogte</h2>
           <p class="signup-intro">
-            Vul je e-mailadres in, dan sturen we je een berichtje zodra we meer
-            weten. Helemaal vrijblijvend.
+            Vul je e-mailadres in, dan sturen we je een berichtje zodra we meer weten. Helemaal vrijblijvend.
           </p>
-
           <form class="signup" id="signup-form">
             <label for="bd-naam">Naam <span>(mag, hoeft niet)</span></label>
             <input
@@ -582,7 +426,6 @@
               placeholder="Naam"
               autocomplete="name"
             >
-
             <label for="bd-email">E-mailadres</label>
             <input
               type="email"
@@ -592,25 +435,19 @@
               autocomplete="email"
               required
             >
-
             <button type="submit" id="signup-button">Houd me op de hoogte</button>
-
             <p id="form-error" class="form-error" role="alert" hidden>
               Er ging iets mis. Probeer het opnieuw of controleer je e-mailadres.
             </p>
-
             <p class="privacy">
-              We gebruiken je e-mailadres alleen voor updates over de meetup.
-              Uitschrijven kan altijd.
+              We gebruiken je e-mailadres alleen voor updates over de meetup. Uitschrijven kan altijd.
             </p>
           </form>
-
           <div id="form-success" class="success" role="status" hidden>
             <div class="check" aria-hidden="true">✓</div>
             <h3>Check je inbox</h3>
             <p>
-              We hebben je een bevestigingsmail gestuurd. Klik op de link in die
-              mail om je aanmelding te bevestigen.
+              We hebben je een bevestigingsmail gestuurd. Klik op de link in die mail om je aanmelding te bevestigen.
             </p>
           </div>
         </div>
@@ -623,14 +460,10 @@
         <div>
           <h2 class="section-title">Gewoon eens samen over bitcoin praten</h2>
           <p class="section-text">
-            Online is veel over bitcoin te vinden, maar soms is het fijner om je
-            vragen gewoon aan iemand te stellen. Daarom willen we in Heiloo een
-            meetup organiseren. Geen presentatie of verkooppraatje — gewoon
-            kennismaken, ervaringen uitwisselen en kijken waar het gesprek uitkomt.
+            Online is veel over bitcoin te vinden, maar soms is het fijner om je vragen gewoon aan iemand te stellen. Daarom willen we in Heiloo een meetup organiseren. Geen presentatie of verkooppraatje — gewoon kennismaken, ervaringen uitwisselen en kijken waar het gesprek uitkomt.
           </p>
           <p class="pullquote">
-            Er is nog geen datum of locatie. We kijken eerst hoeveel mensen
-            interesse hebben.
+            Er is nog geen datum of locatie. We kijken eerst hoeveel mensen interesse hebben.
           </p>
         </div>
       </div>
@@ -644,20 +477,17 @@
           <p class="section-text">
             Ben je nieuwsgierig, of praat je er al jaren over? Allebei prima.
           </p>
-
           <div class="audience">
             <article>
               <h3>Je bent benieuwd</h3>
               <p>
-                Je hoeft geen bitcoin te hebben of je eerst in te lezen. Neem
-                gewoon je vragen mee.
+                Je hoeft geen bitcoin te hebben of je eerst in te lezen. Neem gewoon je vragen mee.
               </p>
             </article>
             <article>
               <h3>Je bent er al langer mee bezig</h3>
               <p>
-                Leuk om anderen uit de buurt te ontmoeten en ervaringen uit te
-                wisselen. Misschien kun je ook iemand anders op weg helpen.
+                Leuk om anderen uit de buurt te ontmoeten en ervaringen uit te wisselen. Misschien kun je ook iemand anders op weg helpen.
               </p>
             </article>
           </div>
@@ -671,10 +501,8 @@
         <div>
           <h2 class="section-title">We kijken eerst wie er interesse heeft</h2>
           <p class="section-text">
-            Als er genoeg mensen zijn, prikken we iets in Heiloo of in de buurt.
-            We denken aan een eerste meetup in het eerste kwartaal van 2027.
+            Als er genoeg mensen zijn, prikken we iets in Heiloo of in de buurt. We denken aan een eerste meetup in het eerste kwartaal van 2027.
           </p>
-
           <ol class="steps">
             <li>
               <div>
@@ -707,7 +535,6 @@
           <p class="section-text">
             Staat je vraag er niet tussen? Stuur gerust een mailtje.
           </p>
-
           <div class="faq-list">
             <details>
               <summary>Moet ik al iets van bitcoin weten?</summary>
@@ -759,11 +586,19 @@
   </footer>
 
   <script>
-    const BUTTONDOWN_URL = 'https://buttondown.com/api/emails/embed-subscribe/bitcoinheiloo';
+    // Theme toggle handling
+    const toggleBtn = document.getElementById('theme-toggle');
+    toggleBtn.addEventListener('click', function () {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const targetTheme = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('theme', targetTheme);
+    });
 
+    // Formulier afhandeling
+    const BUTTONDOWN_URL = 'https://buttondown.com/api/emails/embed-subscribe/bitcoinheiloo';
     document.getElementById('signup-form').addEventListener('submit', async (event) => {
       event.preventDefault();
-
       const form = event.currentTarget;
       const button = document.getElementById('signup-button');
       const error = document.getElementById('form-error');
