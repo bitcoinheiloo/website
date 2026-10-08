@@ -715,16 +715,21 @@
       button.textContent = 'Even wachten…';
       error.hidden = true;
 
-      const payload = {
-        event: 'meetup_signup',
-        email: emailInput.value.trim(),
-        subscribed: true
+      const metadata = {
+        source: 'bitcoinheiloo.nl'
       };
 
       const nameVal = nameInput.value.trim();
       if (nameVal) {
-        payload.data = { name: nameVal };
+        metadata.name = nameVal;
       }
+
+      const payload = {
+        event: 'meetup_signup',
+        email: emailInput.value.trim(),
+        subscribed: true,
+        data: metadata
+      };
 
       try {
         const response = await fetch(PLUNK_TRACK_URL, {
